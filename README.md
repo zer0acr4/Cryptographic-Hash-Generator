@@ -4,10 +4,13 @@ A responsive client-side hash generator supports MD5, SHA-1, SHA-2, and SHA-3 al
 
 > ⚡ Built with accessibility, performance, and cybersecurity awareness in mind.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-orange?style=for-the-badge&logo=vercel)](https://zer0acr4.github.io/Cryptographic-Hash-Generator/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-orange?style=for-the-badge&logo=vercel)](https://zer0acr4.github.io/Cryptographic-Hash-Generator/) <br>
+![GitHub repo size](https://img.shields.io/github/repo-size/zer0acr4/Cryptographic-Hash-Generator)
 
 
 ---
+
+
 
 ## 🚀 Features
 
@@ -25,11 +28,18 @@ A responsive client-side hash generator supports MD5, SHA-1, SHA-2, and SHA-3 al
 
 ---
 
+
 ## 🖥️ Live Demo
 
 🌐 **Try it here:**  
 👉 [https://zer0acr4.github.io/Cryptographic-Hash-Generator/](https://zer0acr4.github.io/Cryptographic-Hash-Generator/)
 
+---
+## 🧩 Use Cases
+- ✅ Verifying file integrity before upload or download
+- ✅ Hashing passwords or user input securely in browser
+- ✅ Comparing file versions via hash
+- ✅ Educational tool for learning cryptographic functions
 ---
 
 ## 📸 Screenshots
@@ -61,15 +71,11 @@ A responsive client-side hash generator supports MD5, SHA-1, SHA-2, and SHA-3 al
 
 Cryptographic-Hash-Generator/
 
-├── index.html
-
-├── style.css
-
-├── script.js
-
-├── assets/ # images, optional screenshots
-
-└── README.md
+&emsp;&emsp;├── index.html <br>
+&emsp;&emsp;├── style.css <br>
+&emsp;&emsp;├── script.js <br>
+&emsp;&emsp;├── assets/ # images, optional screenshots <br>
+&emsp;&emsp;└── README.md
 
 
 
@@ -80,7 +86,7 @@ Cryptographic-Hash-Generator/
 ### ▶️ Online
 Just open the [Live Demo](https://zer0acr4.github.io/Cryptographic-Hash-Generator/) — no installation needed.
 
-### 🛠️ Run Locally
+## 🛠️ Run Locally
 ```bash
 git clone https://github.com/zer0acr4/Cryptographic-Hash-Generator.git
 cd Cryptographic-Hash-Generator
@@ -89,7 +95,7 @@ open index.html    # or drag into your browser
 ---
 
 
-### 🔐 Security Note
+## 🔐 Security Note
 ⚠️ MD5 and SHA-1 are outdated and insecure for cryptographic use.
 They are included here only for educational and compatibility reasons.
 For secure applications, use SHA-2, or SHA-3.
@@ -98,7 +104,7 @@ For secure applications, use SHA-2, or SHA-3.
 
 ---
 
-### ✨ Roadmap & Future Ideas
+## ✨ Roadmap & Future Ideas
 
 ```markdown
 - [ ] Add HMAC support
@@ -110,7 +116,7 @@ For secure applications, use SHA-2, or SHA-3.
  
 ```
 ---
-### 👨‍💻 Author
+## 👨‍💻 Author
 Rithesh Chandraa Alakati
  - 🎓 B.Tech Cybersecurity Student | Aspiring Pentester & Frontend Developer
  - 🔗 GitHub: [zer0arc4](https://github.com/zer0acr4)
@@ -118,11 +124,23 @@ Rithesh Chandraa Alakati
  
 
 ---
-### 🧠 Acknowledgments
-Inspired by developer tools like CyberChef
 
-Thanks to CryptoJS, Cursor, and ChatGPT for helping with my thoughts, debugging, and future enhancements. 
+## 🤝 Contributing
+Contributions, issues and feature requests are welcome!  
+
+
+1. Fork the project
+2. Create your feature branch
+3. Commit changes
+4. Push to the branch
+5. Open a pull request
 
 ---
-### 📄 License
+## 🧠 Acknowledgments
+ - Inspired by developer tools like CyberChef
+
+ - Thanks to CryptoJS, Cursor, and ChatGPT for helping with my thoughts, debugging, and future enhancements. 
+
+---
+## 📄 License
 This project is licensed under the MIT License — free to use and modify.
