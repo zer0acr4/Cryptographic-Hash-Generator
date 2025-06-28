@@ -34,10 +34,17 @@ A responsive client-side hash generator supports MD5, SHA-1, SHA-2, and SHA-3 al
 
 ## 📸 Screenshots
 
-<!-- Add your own screenshots in assets/ folder -->
-| Hash Generator UI | File Upload & History |
-|-------------------|------------------------|
-| ![UI Screenshot](assets/screen1.png) | ![History Screenshot](assets/screen2.png) |
+
+| Main UI | Input Section|
+|---------|-------------|
+| ![Home UI](assets/home.png) | ![Input section](assets/input.png) |
+| Output Section | History section|
+|||
+| ![Output Section](assets/output.png) | ![History section](assets/history.png) |
+| Dark-Mode | Export-Options|
+|||
+| ![Output Section](assets/darkmode.png) | ![History section](assets/export.png) |
+
 
 ---
 
@@ -60,7 +67,7 @@ Cryptographic-Hash-Generator/
 
 ├── script.js
 
-├── assets/ # images, icons, optional screenshots
+├── assets/ # images, optional screenshots
 
 └── README.md
 
