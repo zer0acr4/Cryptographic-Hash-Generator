@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptographic Hash Generator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha3/0.9.2/sha3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div  class="logo" onclick="scrollToTop()">
+                <i class="fas fa-fingerprint"></i>
+                <span>HashGen</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#" onclick="showHashHistory(); return false;">Hash History</a>
+                <a href="#" onclick="toggleTheme(); return false;" class="theme-link" id="themeToggle">Dark Mode</a>                
+            </div>
+            <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>Cryptographic Hash Generator</h1>
+                <p class="subtitle">Generate secure hashes instantly with our advanced cryptographic tool</p>
+                <div class="hero-buttons">
+                    <button class="primary-btn" onclick="scrollToInput()">
+                         Get Started
+                    </button>
+                </div>
+            </div>
+            <div class="hero-animation">
+                <div class="hash-animation"></div>
+            </div>
+        </section>
+
+        <section id="input-section" class="input-section" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Generate Hashes</h2>
+                <p>Enter text or upload a file to generate multiple hash values</p>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-card" data-aos="fade-right">
+                    <div class="card-header">
+                        <i class="fas fa-keyboard"></i>
+                        <h3>Text Input</h3>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="textInput" placeholder="Enter text to generate hash..."></textarea>
+                        <div class="input-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Hashes will be generated automatically as you type</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-card" data-aos="fade-left">
+                    <div class="card-header">
+                        <i class="fas fa-file-upload"></i>
+                        <h3>File Upload</h3>
+                    </div>
+                    <div class="input-group">
+                        <div class="file-upload-area" id="dropZone">
+                            <input type="file" id="fileInput" class="file-input">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop a file here or click to browse</p>
+                                <span class="file-types">Supported formats: Any file type (Max: 50MB)</span>
+                            </div>
+                        </div>
+                        <div class="file-info" id="fileInfo">
+                            <i class="fas fa-file"></i>
+                            <span>No file selected</span>
+                        </div>
+                        <div class="progress-container" id="progressContainer" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-text" id="progressText">0%</div>
+                        </div>
+                        <button onclick="generateFileHashes()" class="generate-btn" id="generateBtn" disabled>
+                             Generate Hash
+                    </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="output-section" data-aos="fade-up">
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" data-tab="md5">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>MD5</span>
+                    </button>
+                    <button class="tab-btn" data-tab="sha1">
+                        <i class="fas fa-key"></i>
+                        <span>SHA-1</span>
+                    </button>
+                    <button class="tab-btn" data-tab="sha224">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SHA-224</span>
+                    </button>
+                    <button class="tab-btn" data-tab="sha256">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SHA-256</span>
+                    </button>
+                    <button class="tab-btn" data-tab="sha512">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SHA-512</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- MD5 Tab -->
+                    <div class="tab-pane active" id="md5-tab">
+                        <div class="hash-card md5-card">
+                            <div class="hash-header">
+                                <div class="hash-title">
+                                    <i class="fas fa-fingerprint"></i>
+                                    <h3>MD5 Hash</h3>
+                                </div>
+                                <div class="hash-actions">
+                                    <button class="copy-btn" onclick="copyHash('md5Output')" title="Copy hash">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-content">
+                                <div class="hash-output" id="md5Output">Your MD5 hash will appear here...</div>
+                                <div class="comparison-container">
+                                    <div class="comparison-input-wrapper">
+                                        <input type="text" id="md5Compare" placeholder="Enter hash to compare..." class="compare-input">
+                                    </div>
+                                    <div class="comparison-result" id="md5Comparison">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>No comparison yet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHA-1 Tab -->
+                    <div class="tab-pane" id="sha1-tab">
+                        <div class="hash-card sha1-card">
+                            <div class="hash-header">
+                                <div class="hash-title">
+                                    <i class="fas fa-key"></i>
+                                    <h3>SHA-1 Hash</h3>
+                                </div>
+                                <div class="hash-actions">
+                                    <button class="copy-btn" onclick="copyHash('sha1Output')" title="Copy hash">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-content">
+                                <div class="hash-output" id="sha1Output">Your SHA-1 hash will appear here...</div>
+                                <div class="comparison-container">
+                                    <div class="comparison-input-wrapper">
+                                        <input type="text" id="sha1Compare" placeholder="Enter hash to compare..." class="compare-input">
+                                    </div>
+                                    <div class="comparison-result" id="sha1Comparison">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>No comparison yet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHA-256 Tab -->
+                    <div class="tab-pane" id="sha256-tab">
+                        <div class="hash-card sha256-card">
+                            <div class="hash-header">
+                                <div class="hash-title">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h3>SHA-256 Hash</h3>
+                                </div>
+                                <div class="hash-actions">
+                                    <button class="copy-btn" onclick="copyHash('sha256Output')" title="Copy hash">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-content">
+                                <div class="hash-output" id="sha256Output">Your SHA-256 hash will appear here...</div>
+                                <div class="comparison-container">
+                                    <div class="comparison-input-wrapper">
+                                        <input type="text" id="sha256Compare" placeholder="Enter hash to compare..." class="compare-input">
+                                    </div>
+                                    <div class="comparison-result" id="sha256Comparison">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>No comparison yet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHA-512 Tab -->
+                    <div class="tab-pane" id="sha512-tab">
+                        <div class="hash-card sha512-card">
+                            <div class="hash-header">
+                                <div class="hash-title">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h3>SHA-512 Hash</h3>
+                                </div>
+                                <div class="hash-actions">
+                                    <button class="copy-btn" onclick="copyHash('sha512Output')" title="Copy hash">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-content">
+                                <div class="hash-output" id="sha512Output">Your SHA-512 hash will appear here...</div>
+                                <div class="comparison-container">
+                                    <div class="comparison-input-wrapper">
+                                        <input type="text" id="sha512Compare" placeholder="Enter hash to compare..." class="compare-input">
+                                    </div>
+                                    <div class="comparison-result" id="sha512Comparison">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>No comparison yet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHA-224 Tab -->
+                    <div class="tab-pane" id="sha224-tab">
+                        <div class="hash-card sha224-card">
+                            <div class="hash-header">
+                                <div class="hash-title">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h3>SHA-224 Hash</h3>
+                                </div>
+                                <div class="hash-actions">
+                                    <button class="copy-btn" onclick="copyHash('sha224Output')" title="Copy hash">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-content">
+                                <div class="hash-output" id="sha224Output">Your SHA-224 hash will appear here...</div>
+                                <div class="comparison-container">
+                                    <div class="comparison-input-wrapper">
+                                        <input type="text" id="sha224Compare" placeholder="Enter hash to compare..." class="compare-input">
+                                    </div>
+                                    <div class="comparison-result" id="sha224Comparison">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>No comparison yet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Security Note -->
+            <div class="security-note" data-aos="fade-up">
+                <div class="note-card">
+                    <div class="note-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h4>Security Information</h4>
+                    </div>
+                    <div class="note-content">
+                        <p><strong>Client-Side Processing:</strong> All hash generation happens in your browser. No data is sent to our servers.</p>
+                        <p><strong>Security Notice:</strong> MD5 and SHA-1 are not recommended for cryptographic security due to known vulnerabilities. Use SHA-224, SHA-256, or SHA-512 for security-critical applications.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Action Button for Export -->
+        <div class="fab-container">
+            <button class="fab-button" id="fabButton" onclick="toggleFabMenu()">
+                <i class="fas fa-download"></i>
+                <span class="fab-text">Export Hashes</span>
+            </button>
+            <div class="fab-menu" id="fabMenu">
+                <button class="fab-menu-item" onclick="exportHashes('txt')">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Export as TXT</span>
+                </button>
+                <button class="fab-menu-item" onclick="exportHashes('pdf')">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Export as PDF</span>
+                </button>
+                <button class="fab-menu-item" onclick="exportHashes('json')">
+                    <i class="fas fa-file-code"></i>
+                    <span>Export as JSON</span>
+                </button>
+           </div>
+        </div>
+
+        <!-- Hash History Modal -->
+        <div id="historyModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-history"></i> Hash History</h3>
+                    <button class="modal-close" onclick="closeHashHistory()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="history-controls">
+                        <button class="history-btn" onclick="exportHistory()">
+                            <i class="fas fa-download"></i>
+                            Export History
+                        </button>
+                        <button class="history-btn danger" onclick="clearHistory()">
+                            <i class="fas fa-trash"></i>
+                            Clear History
+                        </button>
+                    </div>
+                    <div class="history-list" id="historyList">
+                        <!-- History items will be populated here -->
+                    </div>
+                    <div class="history-empty" id="historyEmpty" style="display: none;">
+                        <i class="fas fa-inbox"></i>
+                        <p>No hash history yet</p>
+                        <span>Your generated hashes will appear here</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="about" class="about-section" data-aos="fade-up">
+            <div class="section-header">
+                <h2>About HashGen</h2>
+                <p>A modern, secure cryptographic hash generator with advanced features</p>
+            </div>
+            <div class="about-content">
+                <div class="about-card" data-aos="fade-right">
+                    <div class="about-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Multiple Algorithms</h3>
+                    <p>Generate hashes using 5 different algorithms: MD5, SHA-1, SHA-224, SHA-256, and SHA-512. Each algorithm provides different levels of security and output lengths.</p>
+                </div>
+                <div class="about-card" data-aos="fade-up">
+                    <div class="about-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>All processing happens in your browser. No data is sent to our servers, ensuring complete privacy and security of your information.</p>
+                </div>
+                <div class="about-card" data-aos="fade-left">
+                    <div class="about-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <h3>Text & Files</h3>
+                    <p>Generate hashes from text input or file uploads with drag and drop support. Supports files up to 50MB with real-time progress tracking.</p>
+                </div>
+                <div class="about-card" data-aos="fade-left">
+                    <div class="about-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Export & Share</h3>
+                    <p>Export your hashes in TXT or JSON format. Copy individual hashes with one click. Perfect for documentation and sharing with others.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Developed by Rithesh Chandra Alakati [ zer0acr4 ]</p>
+            <div class="footer-social">
+                <a href="https://github.com/zer0acr4" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/alakati-rithesh-chandra" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/Zer0Arc4" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>  
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Popup Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-popup">
+            <div class="loading-spinner-large"></div>
+            <h3>Processing</h3>
+            <p id="loadingProgress">Generating hashes...</p>
+            <div class="loading-progress-bar">
+                <div class="loading-progress-fill" id="loadingProgressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Scroll to top on page refresh/reload
+        window.addEventListener('beforeunload', function() {
+            window.scrollTo(0, 0);
+        });
+
+        // Alternative method for page refresh
+        if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+            window.scrollTo(0, 0);
+        }
+
+        // Force scroll to top on page load
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+
+        function scrollToInput() {
+            document.getElementById('input-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
